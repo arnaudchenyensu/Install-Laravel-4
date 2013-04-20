@@ -1,6 +1,6 @@
 This simple script automate the process of installing and configuring Laravel 4.
 
-# Installation 
+## Installation 
 
 You first need to download the script :
 ```
