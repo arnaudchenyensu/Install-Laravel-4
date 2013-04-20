@@ -1,7 +1,10 @@
 #!/bin/bash
 
-# Start every script with a comment block that tells what the script does and what parameters it takes. Include your name and the date. If the script requires nonstandard tools, libraries, or modules to be installed on the system, list those as well.
+# TODO :
+# Write a comment block that tells what the script does and what parameters it takes
+# Include my name and the date
 # add --help argument
+# write more comments
 
 # The only argument is the default value to return
 function getInput ()
