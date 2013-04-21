@@ -1,4 +1,4 @@
-This simple script automate the process of installing and configuring Laravel 4.
+This simple script automates the process of installing and configuring Laravel 4.
 
 ## Installation 
 
