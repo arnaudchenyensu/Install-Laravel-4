@@ -1,10 +1,16 @@
 #!/bin/bash
 
-# TODO :
-# Write a comment block that tells what the script does and what parameters it takes
-# Include my name and the date
-# add --help argument
-# write more comments
+# This script was written by Arnaud CHEN-YEN-SU, <arnaud.chenyensu@gmail.com>
+# On April 22, 2013
+# More information on Github : https://github.com/arnaudchenyensu/Install-Laravel-4
+
+function help ()
+{
+    echo "A simple script that automate the process of installing and configuring Laravel 4"
+    echo ""
+    echo "      installLaravel4             - Download, install and configure Laravel 4"
+    echo "      installLaravel4 --help      - Print this output"
+}
 
 # The only argument is the default value to return
 function getInput ()
@@ -51,10 +57,19 @@ function downloadLaravel ()
         rm $archive
 }
 
-function installAndConfigureComposer ()
+function isComposerInstallGlobally ()
 {
     composer >& /dev/null;
     if [ $? -eq 0 ]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+function installAndConfigureComposer ()
+{
+    if  isComposerInstallGlobally ; then
         echo "Great! Composer is already install";
     else
         echo "Oops, seems like Composer is not install... I'll install it into your project"
@@ -82,13 +97,13 @@ function installAndConfigureComposer ()
 # Installing dependencies with Composer
 function installDependencies ()
 {
-    if [ $locally ]; then
-        php composer.phar install
-    else
+    if isComposerInstallGlobally ; then
         composer install
+    else
+        php composer.phar install
     fi
     if [ $? -ne 0 ]; then
-        echo "There was a problem when installing dependencies. Please run again the script with the argument '-c'"
+        echo "There was a problem when installing dependencies."
         exit 3
     fi
 }
@@ -120,7 +135,22 @@ function configureLaravel ()
     echo "You're ready to go! Just make sure that app/storage directory is writable by the web server"
 }
 
-downloadLaravel
-installAndConfigureComposer
-installDependencies
-configureLaravel
+if [ $# -eq 0 ]; then
+    downloadLaravel
+    installAndConfigureComposer
+    installDependencies
+    configureLaravel
+    exit 0
+else
+    case $1 in
+    --help)
+            help
+            exit 0
+            ;;
+    *)
+            echo "Invalid argument"
+            help
+            exit 5
+            ;;
+    esac
+fi
