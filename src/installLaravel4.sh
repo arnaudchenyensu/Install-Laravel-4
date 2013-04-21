@@ -6,7 +6,7 @@
 
 function help ()
 {
-    echo "A simple script that automate the process of installing and configuring Laravel 4"
+    echo "A simple script that automates the process of installing and configuring Laravel 4"
     echo ""
     echo "      installLaravel4             - Download, install and configure Laravel 4"
     echo "      installLaravel4 --help      - Print this output"
