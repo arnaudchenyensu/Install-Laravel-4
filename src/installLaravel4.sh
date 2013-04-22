@@ -8,8 +8,13 @@ function help ()
 {
     echo "A simple script that automates the process of installing and configuring Laravel 4"
     echo ""
-    echo "      installLaravel4             - Download, install and configure Laravel 4"
-    echo "      installLaravel4 --help      - Print this output"
+    echo "      installLaravel4                 - Download, install and configure Laravel 4"
+    echo "      installLaravel4 --help          - Print this output"
+    echo "      installLaravel4 --download      - Download Laravel 4"
+    echo "      installLaravel4 --composer      - Install and configure Composer by adding the Laravel Generator of Jeffrey Way"
+    echo "                                        More information on Github : https://github.com/JeffreyWay/Laravel-4-Generators"
+    echo "      installLaravel4 --dependencies  - Install the dependencies using Composer"
+    echo "      installLaravel4 --configure     - Configure Laravel 4 (generate key and configure the database)"
 }
 
 # The only argument is the default value to return
@@ -30,6 +35,7 @@ function replace ()
      mv $1.tmp $1
 }
 
+# --download
 function downloadLaravel ()
 {
     archive=laravel-`date +%s`.zip
@@ -67,6 +73,7 @@ function isComposerInstallGlobally ()
     fi
 }
 
+# --composer
 function installAndConfigureComposer ()
 {
     if  isComposerInstallGlobally ; then
@@ -95,6 +102,7 @@ function installAndConfigureComposer ()
 }
 
 # Installing dependencies with Composer
+# --dependencies
 function installDependencies ()
 {
     if isComposerInstallGlobally ; then
@@ -108,6 +116,7 @@ function installDependencies ()
     fi
 }
 
+# --configure
 function configureLaravel ()
 {
     php artisan key:generate
@@ -132,7 +141,9 @@ function configureLaravel ()
     password=$REPLY
     replace $database_config_file "'password'  => ''" "'password'  => '$password'"
 
-    echo "You're ready to go! Just make sure that app/storage directory is writable by the web server"
+    chmod -R o+w app/storage
+
+    echo "You're ready to go!"
 }
 
 if [ $# -eq 0 ]; then
@@ -145,6 +156,22 @@ else
     case $1 in
     --help)
             help
+            exit 0
+            ;;
+    --download)
+            downloadLaravel
+            exit 0
+            ;;
+    --composer)
+            installAndConfigureComposer
+            exit 0
+            ;;
+    --dependencies)
+            installDependencies
+            exit 0
+            ;;
+    --configure)
+            configureLaravel
             exit 0
             ;;
     *)
